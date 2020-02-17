@@ -1,14 +1,16 @@
 <template>
-  <div
-    class="mt-4 bg-gray-100 mx-auto relative"
-  >
+  <div class="mt-4 bg-gray-100 mx-auto relative">
     <div
       v-if="image"
       v-lazy:background-image="`${image}`"
       class="bg-contain h-48 relative"
     >
       <div class="absolute right-0 top-0">
-        <button type="button" @click="removeImage(image)" class="w-8 h-8 rounded-full bg-gray-300 cursor-pointer hover:bg-gray-200">
+        <button
+          type="button"
+          @click="removeImage(image)"
+          class="w-8 h-8 rounded-full bg-gray-300 cursor-pointer hover:bg-gray-200"
+        >
           <i class="fa fa-close" />
         </button>
       </div>
@@ -28,7 +30,7 @@
           class="input-file"
         >
         <p v-if="isInitial">
-          Drag food image here to upload<br> or click to browse
+          Drag profile image here to upload<br> or click to browse
         </p>
         <p v-if="isSaving">
           Uploading {{ fileCount }} files...

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Heading title="Chef Details" />
+    <Heading title="Personal Details" />
     <div class="w-full pb-4 lg:w-1/3 m-auto">
       <form
         class="lg:mx-15 form w-full mb-1"
@@ -15,12 +15,6 @@
             name="name"
           >Phone: {{a.phone}}
           </div>
-          <Textbox
-            label="Restaurant"
-            class="w-full"
-            name="restaurant"
-            v-model="profile.restaurant"
-          />
           <div class="w-full flex justify-between">
             <Textbox
               label="First Name"
@@ -171,7 +165,7 @@ export default {
         const data = await this.$axios.$put("api/users/profile", this.profile);
         // await this.updateProfile({profile });
         this.$store.commit("busy", false);
-        this.go("/foods");
+        this.go("/delivery");
       } catch (e) {
         this.$store.commit("busy", false);
       }
