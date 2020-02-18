@@ -59,6 +59,15 @@ img[lazy="loading"] {
     transform: scale(1);
   }
 }
+.heading {
+  text-align: center;
+  color: #fff;
+  background: linear-gradient(87deg, #fb6340 0, #da1c5f 100%) !important;
+  box-shadow: 0 0.3rem 0.3rem rgba(0, 0, 0, 0.175) !important;
+  margin-bottom: 0.5rem;
+  padding: 1rem 0;
+  font-size: 2rem;
+}
 .fab {
   @apply primary fixed bottom-0 right-0 mr-1 mb-1 w-10 h-10 rounded-full text-center;
 }

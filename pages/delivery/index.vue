@@ -1,139 +1,118 @@
 <template>
   <div>
-    <Heading title="Today's Delivery" />
-    <div class="m-2 flex justify-between">
-      <a
-        class="p-2 bg-gray-200 rounded shadow"
-        href="/api/food-orders/export/500"
-      >Export Today's</a>
-      <a
-        class="p-2 bg-gray-200 rounded shadow"
-        href="/api/food-orders/dailyTotalByChef"
-      >Total by date</a>
-      <a
-        class="p-2 bg-gray-200 rounded shadow"
-        href="/api/food-orders/dailyTotalByItem"
-      >Total by item</a>
+    <Header />
+    <div class="heading">
+      Today's Delivery
+      <button icon dark @click="getData">
+        <i class="fa fa-refresh" />
+      </button>
     </div>
-    <div>
-      <div
-        class="flex justify-center"
-        v-if="todayTotal"
+    <div class="flex justify-center text-2xl" v-if="orders.all">
+      <h1 class="text-blue-500">{{ orders.all.total | currency }}</h1>
+      <h1 class="text-red-500">
+        &nbsp;- {{ orders.cancelled.total | currency }}
+      </h1>
+      <h1 class="text-green-500">
+        &nbsp; = {{ (orders.all.total - orders.cancelled.total) | currency }}
+      </h1>
+    </div>
+    <div class="flex justify-center">
+      <Radio
+        v-model="status"
+        value="pending"
+        class="text-xs mr-2"
+        v-if="orders.pending"
       >
-        <h2>{{todayTotal.count}}</h2>
-        <h1>{{todayTotal.total | currency}}</h1>
-      </div>
-      <ul class="p-left">
-        <li
-          class="card"
-          v-for="(o,ix) in orders"
-          :key="ix"
-        >
-          <div class="font">
-            <h1 class="seller">{{o._id.restaurant}} - {{o._id.phone}} <span style="color:green">{{o._id.qrno}}</span></h1>
-          </div>
-          <div
-            v-for="(i,ixx) in o.data"
-            :key="'i-'+ixx"
-            class="customer"
-          >
-            <div class="pb-1">{{i.name}} ({{i.phone}}) </div>
-            <div class="jc-sb">
-              <div
-                class="pb-1"
-                style="color:#333"
-              >{{i.item}}</div>
-              <div class="pb-1">{{i.qty}} * {{i.rate | currency}} = {{i.amount | currency}}</div>
-              <div style="color:red">{{i.qrno}}</div>
-            </div>
-            <div class="center">
-              <v-btn-toggle
-                v-model="i.status"
-                @change='save(i)'
-              >
-                <v-btn
-                  text
-                  value="Cancelled"
-                  class="btn4 font"
-                >
-                  Cancelled
-                </v-btn>
-                <v-btn
-                  text
-                  value="Prepared"
-                  class="btn1 font"
-                >
-                  Prepared
-                </v-btn>
-                <v-btn
-                  text
-                  value="Out For Delivery"
-                  class="btn2 font"
-                >
-                  Out For Delivery
-                </v-btn>
-                <v-btn
-                  text
-                  value="Delivered"
-                  class="btn3 font"
-                >
-                  Delivered
-                </v-btn>
-              </v-btn-toggle>
-            </div>
-            <div style="color:violet;font-size:0.7rem;text-align:center">{{i.createdAt | date}}</div>
-          </div>
-
-        </li>
-
-      </ul>
+        Pending ({{ orders.pending.count }})
+      </Radio>
+      <Radio v-model="status" value="od" class="text-xs mr-2" v-if="orders.od">
+        Out ({{ orders.od.count }})
+      </Radio>
+      <Radio
+        v-model="status"
+        value="delivered"
+        class="text-xs mr-2"
+        v-if="orders.delivered"
+      >
+        Delivered ({{ orders.delivered.count }})
+      </Radio>
+      <Radio
+        v-model="status"
+        value="cancelled"
+        class="text-xs mr-2"
+        v-if="orders.cancelled"
+      >
+        Cancelled ({{ orders.cancelled.count }})
+      </Radio>
+      <Radio
+        v-model="status"
+        value="all"
+        class="text-xs mr-2"
+        v-if="orders.all"
+      >
+        All ({{ orders.all.count }})
+      </Radio>
     </div>
-    <nuxt-link
-      to="/my/food/delivery/old/"
-      class="history-button"
-    >Old Delivery</nuxt-link>
+    <div v-if="orders[status]">
+      <div
+        class="flex flex-col justify-between smallcard"
+        v-for="f in orders[status].items"
+        :key="f._id"
+      >
+        <div
+          class="flex justify-between border-b pt-1"
+          @click="go('/delivery/' + f._id)"
+        >
+          <div class="">
+            <h2 class="text-3xl">{{ f.vendor.qrno }}</h2>
+            <div class="font-bold">{{ f.vendor.phone }}</div>
+            <div class="text-gray-800">{{ f.vendor.restaurant }}</div>
+          </div>
+          <div class="">
+            <h1 class="text-3xl">{{ f.address.qrno }}</h1>
+            <div class="font-bold">{{ f.phone }}</div>
+            <div class="text-gray-800">{{ f.address.recipient_name }}</div>
+          </div>
+          <div class="font-bold text-green-500 text-3xl">
+            {{ f.amount | currency }}
+          </div>
+        </div>
+        <div class="bg-yellow-100">{{ f.item.name }}</div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
-const Heading = () => import("~/components/Heading");
+const Header = () => import("~/components/Header");
+const Radio = () => import("~/components/ui/Radio");
 // import io from "socket.io-client";
 // import { WS_URL } from "~/config";
 // let socket = io(WS_URL);
+// import { SocketService } from "~/service/socket";
+// let ss = new SocketService();
 export default {
   data() {
     return {
-      orders: [],
-      status: "Received",
-      todayTotal: null
+      status: "pending",
+      orders: {}
     };
   },
-  async created() {
-    try {
-      this.$store.commit("busy", true);
-      this.orders = await $axios.$get("api/food-orders/group");
-      this.todayTotal = await $axios.$get("api/food-orders/summary/today");
-    } catch (e) {
-    } finally {
-      this.$store.commit("busy", false);
-    }
-    let axios = this.$axios;
-    let vm = this;
-    // socket.on("food-order" + ":save", async function(item) {
-    //   vm.orders = await axios.$get("food-orders/group");
-    //   vm.todayTotal = await axios.$get("food-orders/summary/today");
-    // });
+  created() {
+    this.getData();
   },
-  components: { Heading },
+  components: { Header, Radio },
   methods: {
-    async save(o) {
-      try {
-        await this.$axios.$put("api/food-orders/" + o._id, {
-          status: o.status
-        });
-      } catch (e) {}
-    },
     go(url) {
       this.$router.push(url);
+    },
+    async getData() {
+      try {
+        this.$store.commit("busy", true);
+        this.orders = await this.$axios.$get("api/food-orders/todaysStatus");
+      } catch (e) {
+      } finally {
+        this.$store.commit("busy", false);
+      }
     }
   }
 };
@@ -141,41 +120,55 @@ export default {
 
 <style scoped>
 h1 {
-  margin: 0px 0px 10px 0px;
+  color: red;
 }
-li .customer {
-  border-bottom: 1px solid #ccc;
+h2 {
+  color: grey;
 }
-ul > li {
-  list-style: none;
-  margin: 10px;
-  padding: 10px;
+.fx {
+  display: flex;
+  justify-content: center;
 }
-.card {
+.js-bt {
+  justify-content: space-between;
+}
+.smallcard {
   padding: 1rem;
-  margin: 1rem;
-  -webkit-box-shadow: 0 -0.1rem 1.1rem rgba(0, 0, 0, 0.175) !important;
-  box-shadow: 0 -0.1rem 1.1rem rgba(0, 0, 0, 0.175) !important;
-  border-radius: 0.5rem;
+  margin-left: 1rem;
+  margin-right: 1rem;
+  border-radius: 5px;
+  margin-top: 1rem;
+  box-shadow: 0 15px 35px rgba(50, 50, 93, 0.1), 0 5px 15px rgba(0, 0, 0, 0.07) !important;
 }
-.p-left {
-  padding-left: 0px;
-}
-.seller {
-  font-size: 1.4rem;
-}
-.customer {
-  padding: 1rem;
-  font-size: 1.2rem;
-  color: blue;
-  font-weight: 500;
-}
-
-.font {
+.smallFont {
   padding-left: 1rem;
   font-size: 0.7rem;
   padding-left: 0.5rem !important;
   font-weight: 900;
 }
+.block {
+  display: none;
+}
+.fonttype {
+  font-size: 20px;
+  font-weight: 500;
+}
+.pb-1rm {
+  padding-bottom: 1rem;
+}
+.pt-1rem {
+  padding-top: 1rem;
+}
+.grn {
+  color: green;
+}
+.redclr {
+  color: red;
+}
+.blueclr {
+  color: royalblue;
+}
+.border-b {
+  border-bottom: 1px solid #c5bfbf;
+}
 </style>
-
