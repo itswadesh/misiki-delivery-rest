@@ -24,51 +24,47 @@
             <div style="color:violet;font-size:0.7rem;text-align:center">{{i.createdAt | date}}</div>
           </div>
           <div class="center pt-1">
-            <v-btn-toggle
+            <Button
               v-model="o.status"
-              @change='save(o)'
+              value="Cancelled"
+              class="btn4 font"
             >
-              <v-btn
-                text
-                value="Cancelled"
-                class="btn4 font"
-              >
-                Cancelled
-              </v-btn>
-              <v-btn
-                text
-                value="Prepared"
-                class="btn1 font"
-              >
-                Prepared
-              </v-btn>
-              <v-btn
-                text
-                value="Out For Delivery"
-                class="btn2 font"
-              >
-                Out For Delivery
-              </v-btn>
-              <v-btn
-                text
-                value="Delivered"
-                class="btn3 font"
-              >
-                Delivered
-              </v-btn>
-            </v-btn-toggle>
+              Cancelled
+            </Button>
+            <Button
+              v-model="o.status"
+              value="Prepared"
+              class="btn1 font"
+            >
+              Prepared
+            </Button>
+            <Button
+              v-model="o.status"
+              value="Out For Delivery"
+              class="btn2 font"
+            >
+              Out For Delivery
+            </Button>
+            <Button
+              v-model="o.status"
+              value="Delivered"
+              class="btn3 font"
+            >
+              Delivered
+            </Button>
           </div>
         </li>
       </ul>
     </div>
     <nuxt-link
-      to="/my/food/delivery/"
+      to="/delivery/"
       class="history-button"
     >Today's Delivery</nuxt-link>
   </div>
 </template>
 <script>
 const Header = () => import("~/components/Header");
+const Button = () => import("~/components/ui/Button");
 export default {
   async asyncData({ $axios }) {
     let orders = [],
@@ -78,14 +74,19 @@ export default {
     } catch (e) {}
     return { orders };
   },
-  components: { Header },
+  components: { Header, Button },
   methods: {
     async save(o) {
       try {
+        this.$store.commit("busy", true);
+
         await this.$axios.$put("api/food-orders/" + o._id, {
           status: o.status
         });
-      } catch (e) {}
+      } catch (e) {
+      } finally {
+        this.$store.commit("busy", false);
+      }
     },
     go(url) {
       this.$router.push(url);

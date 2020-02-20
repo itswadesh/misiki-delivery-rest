@@ -11,7 +11,10 @@
       </button>
     </div>
 
-    <div class="flex" v-if="total">
+    <div
+      class="flex"
+      v-if="total"
+    >
       <h1 style="color:blue">{{ total.total | currency }}</h1>
     </div>
     <div
@@ -38,16 +41,22 @@
       </div>
       <div class=" bg-yellow-200 text-black">{{ f.item.name }}</div>
       <div class="flex items-center justify-between">
-        <button class="button" @click="save(f._id, 'Out For Delivery')">
+        <button
+          class="button"
+          @click="save(f._id, 'Out For Delivery')"
+        >
           Pick
         </button>
         <button @click="cancel(f._id, 'Cancelled')">Cancel</button>
       </div>
     </div>
+    <StickyFooter />
+
   </div>
 </template>
 <script>
 const Header = () => import("~/components/Header");
+const StickyFooter = () => import("~/components/footer/StickyFooter");
 // import io from "socket.io-client";
 // import { WS_URL } from "~/config";
 // let socket = io(WS_URL);
@@ -65,7 +74,8 @@ export default {
     this.getData();
   },
   components: {
-    Header
+    Header,
+    StickyFooter
   },
   methods: {
     cancel(id, status) {

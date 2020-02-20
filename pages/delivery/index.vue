@@ -3,11 +3,18 @@
     <Header />
     <div class="heading">
       Today's Delivery
-      <button icon dark @click="getData">
+      <button
+        icon
+        dark
+        @click="getData"
+      >
         <i class="fa fa-refresh" />
       </button>
     </div>
-    <div class="flex justify-center text-2xl" v-if="orders.all">
+    <div
+      class="flex justify-center text-2xl"
+      v-if="orders.all"
+    >
       <h1 class="text-blue-500">{{ orders.all.total | currency }}</h1>
       <h1 class="text-red-500">
         &nbsp;- {{ orders.cancelled.total | currency }}
@@ -25,7 +32,12 @@
       >
         Pending ({{ orders.pending.count }})
       </Radio>
-      <Radio v-model="status" value="od" class="text-xs mr-2" v-if="orders.od">
+      <Radio
+        v-model="status"
+        value="od"
+        class="text-xs mr-2"
+        v-if="orders.od"
+      >
         Out ({{ orders.od.count }})
       </Radio>
       <Radio
@@ -80,11 +92,13 @@
         <div class="bg-yellow-100">{{ f.item.name }}</div>
       </div>
     </div>
+    <StickyFooter />
   </div>
 </template>
 <script>
 const Header = () => import("~/components/Header");
 const Radio = () => import("~/components/ui/Radio");
+const StickyFooter = () => import("~/components/footer/StickyFooter");
 // import io from "socket.io-client";
 // import { WS_URL } from "~/config";
 // let socket = io(WS_URL);
@@ -100,7 +114,7 @@ export default {
   created() {
     this.getData();
   },
-  components: { Header, Radio },
+  components: { Header, Radio, StickyFooter },
   methods: {
     go(url) {
       this.$router.push(url);

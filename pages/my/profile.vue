@@ -97,13 +97,13 @@ const Heading = () => import("~/components/Heading");
 const Textbox = () => import("~/components/ui/Textbox");
 const GeoLocation = () => import("~/components/GeoLocation");
 const SingleImageUpload = () => import("~/components/SingleImageUpload");
-import { geo } from "~/mixins";
+import { location } from "~/mixins";
 export default {
   fetch({ store, redirect }) {
     if (!(store.state.auth || {}).user)
       return redirect("/login?return=/my/profile");
   },
-  mixins: [geo],
+  mixins: [location],
   data() {
     return {
       a: {},

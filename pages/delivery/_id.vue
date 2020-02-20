@@ -69,9 +69,11 @@
         <span class="fonttype grn">Put Back</span>
       </button>
     </div>
+    <StickyFooter />
   </div>
 </template>
 <script>
+const StickyFooter = () => import("~/components/footer/StickyFooter");
 export default {
   data() {
     return {
@@ -100,7 +102,8 @@ export default {
         this.$store.commit("busy", false);
       }
     }
-  }
+  },
+  components: { StickyFooter }
 };
 </script>
 <style scoped>

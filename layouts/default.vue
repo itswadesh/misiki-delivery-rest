@@ -1,6 +1,5 @@
 <template>
-  <div style="" class="bg-gray-100 antialiased min-h-screen">
-    <!-- <Header /> -->
+  <div class="bg-gray-100 antialiased min-h-screen">
     <div class="mb-24">
       <nuxt />
     </div>

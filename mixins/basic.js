@@ -1,5 +1,4 @@
 import { typingTimeout } from "@/config";
-import ListImage from "@/components/ListImage";
 
 export default {
   data: () => ({
@@ -77,8 +76,6 @@ export default {
         text: "You won't be able to revert this!",
         type: "warning",
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
         confirmButtonText: "Yes, delete it!"
       }).then(result => {
         if (result.value) {
@@ -188,5 +185,4 @@ export default {
       }
     }
   },
-  components: { ListImage }
 }

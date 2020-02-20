@@ -1,20 +1,27 @@
 <template>
   <div>
     <Header />
-    <div class="heading" v-if="orders.all">
-      Today's Pickup - {{ orders.all.count }}
-      <button icon dark @click="getData">
+    <div class="heading">
+      Today's Pickup - {{ orders.all && orders.all.count }}
+      <button @click="getData">
         <i class="fa fa-refresh" />
       </button>
     </div>
-    <div class="fx" v-if="orders.all">
+    <div
+      class="fx"
+      v-if="orders.all"
+    >
       <h1 style="color:blue">{{ orders.all.total | currency }}</h1>
       <h1 style="color:red">&nbsp;- {{ orders.cancelled.total | currency }}</h1>
       <h1 style="color:green">
         &nbsp; = {{ (orders.all.total - orders.cancelled.total) | currency }}
       </h1>
     </div>
-    <div class="content js-bt smallcard fx" v-for="c in chefs" :key="c._id._id">
+    <div
+      class="content js-bt smallcard fx"
+      v-for="c in chefs"
+      :key="c._id._id"
+    >
       <nuxt-link :to="'/pickup/' + c._id._id">
         <div class="">
           <h2 class="text-3xl font-black">{{ c._id.restaurant }}</h2>
@@ -31,10 +38,13 @@
         </h1>
       </nuxt-link>
     </div>
+    <StickyFooter />
+
   </div>
 </template>
 <script>
 const Header = () => import("~/components/Header");
+const StickyFooter = () => import("~/components/footer/StickyFooter");
 // import io from "socket.io-client";
 // import { WS_URL } from "~/config";
 // let socket = io(WS_URL);
@@ -51,7 +61,8 @@ export default {
     this.getData();
   },
   components: {
-    Header
+    Header,
+    StickyFooter
   },
   methods: {
     go(url) {
