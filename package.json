@@ -1,7 +1,7 @@
 {
-  "name": "reload",
+  "name": "delivery",
   "version": "1.0.0",
-  "description": "Misiki Delivery community",
+  "description": "Misiki Delivery Community",
   "author": "Swadesh Behera",
   "private": true,
   "config": {

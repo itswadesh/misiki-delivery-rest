@@ -5,11 +5,12 @@
       <br />
       <span class="text-lg">{{user.firstName}}</span>
       <span class="text-sm text-gray-500">{{user.email}}</span>
+      <span class="text-sm text-gray-500">{{user.phone}}</span>
     </div>
     <ul>
       <li>
         <nuxt-link
-          to="/my/orders"
+          to="/pickup"
           active-class="text-pink-500"
           class="w-full flex flex-wrap text-lg"
         >
@@ -19,7 +20,22 @@
               aria-hidden="true"
             ></i>
           </div>
-          <div class="w-4/5 text-left p-3">Orders</div>
+          <div class="w-4/5 text-left p-3">Pickup</div>
+        </nuxt-link>
+      </li>
+      <li>
+        <nuxt-link
+          to="/delivery"
+          active-class="text-pink-500"
+          class="w-full flex flex-wrap text-lg"
+        >
+          <div class="w-1/5">
+            <i
+              class="fa fa-archive p-5"
+              aria-hidden="true"
+            ></i>
+          </div>
+          <div class="w-4/5 text-left p-3">Delivery</div>
         </nuxt-link>
       </li>
       <li>
@@ -63,7 +79,7 @@
       </li> -->
       <li>
         <nuxt-link
-          to="/my/password"
+          to="/reviews"
           active-class="text-pink-500"
           class="w-full flex flex-wrap text-lg"
         >
@@ -73,10 +89,10 @@
               aria-hidden="true"
             ></i>
           </div>
-          <div class="w-4/5 text-left p-3">Password</div>
+          <div class="w-4/5 text-left p-3">Reviews</div>
         </nuxt-link>
       </li>
-      <li>
+      <!-- <li>
         <a
           href="#"
           class="w-full flex flex-wrap text-lg"
@@ -89,7 +105,7 @@
           </div>
           <div class="w-4/5 text-left p-3">Credits</div>
         </a>
-      </li>
+      </li> -->
       <li>
         <div
           @click="logout"

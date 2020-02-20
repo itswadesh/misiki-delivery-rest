@@ -96,7 +96,7 @@ export default {
       try {
         this.$store.commit("busy", true);
         await this.$axios.$put("api/food-orders/" + id, { status });
-        this.$router.push("/food/delivery");
+        this.$router.push("/delivery");
       } catch (e) {
       } finally {
         this.$store.commit("busy", false);
