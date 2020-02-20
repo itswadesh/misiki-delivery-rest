@@ -23,8 +23,9 @@
           <div class="p-6">
             <div>
               <Textbox
+                type="tel"
                 v-model="uid"
-                label="Email/Phone"
+                label="Phone"
                 @keyup="onPhoneChange"
                 class="bg-gray-200"
               />
@@ -82,6 +83,7 @@
                     :class="{'wraper-hide':otp.length>3}"
                   ></div>
                   <input
+                    type="tel"
                     v-model="otp"
                     name="otp"
                     ref="otp"
@@ -313,12 +315,12 @@ export default {
           hid: "og:title",
           name: "og:title",
           property: "og:title",
-          content: "Checkout with the products in your cart"
+          content: "Login"
         },
         // Twitter
         {
           name: "twitter:title",
-          content: "Checkout with the products in your cart"
+          content: "Login"
         },
         {
           name: "twitter:description",

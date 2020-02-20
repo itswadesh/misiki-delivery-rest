@@ -192,12 +192,12 @@ export default {
           hid: "og:title",
           name: "og:title",
           property: "og:title",
-          content: "Checkout with the products in your cart"
+          content: "Login"
         },
         // Twitter
         {
           name: "twitter:title",
-          content: "Checkout with the products in your cart"
+          content: "Login"
         },
         {
           name: "twitter:description",

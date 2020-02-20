@@ -144,78 +144,6 @@
     </div>
     <!-- <StickyFooter class /> -->
   </div>
-  <!-- <div>
-    <h1 v-if="!product">Not found</h1>
-    <div v-else class="relative">
-      <button
-        class="ml-2 mt-1 px-auto py-auto text-center absolute rounded-full left-0 w-10 h-10"
-      >
-        <i class="fa fa-long-arrow-left text-white" />
-      </button>
-      <button
-        class="mr-2 mt-1 px-auto py-auto text-center absolute rounded-full right-0 w-10 h-10"
-      >
-        <i class="fa fa-search text-white" />
-      </button>
-      <img
-        v-lazy="`${product.img}`"
-        alt
-        class="w-full object-cover h-48 mb-2"
-      />
-      <h1>{{ product.name }}</h1>
-      <div>{{ product.description }}</div>
-      <div>{{ product.type }}</div>
-      <div>{{ product.rate }}</div>
-      <div>{{ product.stock }}</div>
-      <div>{{ product.restaurant }}</div>
-      <div>{{ product.img }}</div>
-      <CartButtons
-        :product="product"
-        :variant="userSelectedVariant"
-        :notify="true"
-      />
-      <div class="items-center text-sm px-3 bg-gray-100 my-3 p-3 lg:my-0">
-        <div class="flex items-center">
-          <span class="mr-4"> SELECT SIZE: </span>
-        </div>
-        <div
-          class="flex flex-wrap py-4 relative px-3"
-          :class="{ 'shake-animation': shake }"
-        >
-          <div v-for="v in product.variants" :key="v._id">
-            <button
-              @click="selectVariant(v)"
-              :class="{
-                'bg-gray-700 text-white':
-                  v.size == (userSelectedVariant && userSelectedVariant.size)
-              }"
-              v-if="v.stock > 0"
-              class="focus:outline:none m-1 rounded-full border border-gray-400 w-12 h-12 hover:border-black hover:font-bold"
-            >
-              <div class="text-xs">{{ v.size }}</div>
-              <div
-                v-if="v.stock < 5"
-                class="text-xs font-semibold absolute w-12 bg-orange-500 text-white rounded"
-              >
-                {{ v.stock }} left
-              </div>
-            </button>
-            <button
-              v-else
-              class="bg-gray-700 text-white focus:outline:none m-1 rounded-full border border-gray-400 w-12 h-12"
-            >
-              <div class="text-xs">{{ v.size }}</div>
-              <div
-                class="text-xs font-semibold absolute w-12 bg-orange-500 text-white rounded"
-              >
-                No stock
-              </div>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>-->
 </template>
 
 <script>
@@ -246,9 +174,9 @@ export default {
     }
   },
   computed: {
-    ...mapGetters({
-      checkCart: "cart/checkCart"
-    }),
+    // ...mapGetters({
+    //   checkCart: "cart/checkCart"
+    // }),
     user() {
       return (this.$store.state.auth || {}).user || null;
     },
