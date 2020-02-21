@@ -5,53 +5,35 @@
       <nuxt-link to="/pickup">
         <i class="fa fa-long-arrow-left" />
       </nuxt-link>
-      <span v-if="orders[0]"> {{ orders[0].vendor.restaurant }}</span> Pickup
+      <span v-if="orders[0]">{{ orders[0].vendor.restaurant }}</span> Pickup
       <button @click="getData">
         <i class="fa fa-refresh" />
       </button>
     </div>
 
-    <div
-      class="flex"
-      v-if="total"
-    >
+    <div class="flex" v-if="total">
       <h1 style="color:blue">{{ total.total | currency }}</h1>
     </div>
-    <div
-      class="flex flex-col justify-between smallcard"
-      v-for="f in orders"
-      :key="f._id"
-    >
-      <div
-        class="flex justify-between items-center border-b pt-1"
-        @click="go('/delivery/' + f._id)"
-      >
-        <div class="">
+    <div class="flex flex-col justify-between smallcard" v-for="f in orders" :key="f._id">
+      <div class="flex justify-between items-center border-b pt-1">
+        <!-- @click="go('/delivery/' + f._id)" -->
+        <div class>
           <h2 class="text-3xl font-black">{{ f.vendor.qrno }}</h2>
-          {{ f.vendor.phone }}
+          <a class="text-xl bg-red-500 text-white" :href="`tel:+91-${f.vendor.phone}`">Call Chef</a>
         </div>
-        ->
-        <div class="">
+        <div>
           <h1 class="text-3xl font-black">{{ f.address.qrno }}</h1>
-          {{ f.phone }}
+          <a class="text-xl bg-blue-500 text-white" :href="`tel:+91-${f.phone}`">Call Customer</a>
         </div>
-        <div class=" font-black text-green-600 text-3xl">
-          {{ f.amount | currency }}
-        </div>
+        <div class="font-black text-green-600 text-3xl">{{ f.amount | currency }}</div>
       </div>
-      <div class=" bg-yellow-200 text-black">{{ f.item.name }}</div>
+      <div class="bg-yellow-200 text-black">{{ f.item.name }}</div>
       <div class="flex items-center justify-between">
-        <button
-          class="button"
-          @click="save(f._id, 'Out For Delivery')"
-        >
-          Pick
-        </button>
+        <button class="button" @click="save(f._id, 'Out For Delivery')">Pick</button>
         <button @click="cancel(f._id, 'Cancelled')">Cancel</button>
       </div>
     </div>
     <StickyFooter />
-
   </div>
 </template>
 <script>
