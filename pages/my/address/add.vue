@@ -36,6 +36,7 @@
             v-model="a.lastName"
           />
           <Textbox
+            type="tel"
             label="Pin Code"
             class="w-full"
             name="name"
@@ -69,6 +70,7 @@
             />
           </div>
           <Textbox
+            type="tel"
             label="Phone"
             class="w-full"
             name="name"
