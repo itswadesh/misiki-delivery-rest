@@ -44,6 +44,10 @@ export default {
     "/auth": PROXY,
     "/images": PROXY
   },
+  generate: {
+    dir: 'dist',
+    fallback: true
+  },
   build: {
     postcss: {
       plugins: {
