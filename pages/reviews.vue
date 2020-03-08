@@ -1,26 +1,39 @@
 <template>
   <div>
-    <div class="heading">Reviews
-      <button>
-        <i class="fa fa-refresh" />
-      </button>
-    </div>
+    <Heading title="Reviews" />
+
     <StickyFooter />
   </div>
 </template>
+
 <script>
-const StickyFooter = () => import("~/components/footer/StickyFooter");
+const StickyFooter = () => import('~/components/footer/StickyFooter')
+const Heading = () => import('~/components/Heading')
+import reviews from '~/gql/product/reviews.gql'
 
 export default {
+  components: { StickyFooter, Heading },
   data() {
     return {
-      order: {}
-    };
+      reviews: null
+    }
   },
-  async created() {},
-  components: {
-    StickyFooter
+  async mounted() {
+    try {
+      this.reviews = (
+        await this.$apollo.query({
+          query: reviews,
+          fetchPolicy: 'no-cache'
+        })
+      ).data.reviews
+    } catch (e) {
+      this.$store.commit('setErr', e)
+    } finally {
+      this.$store.commit('busy', false)
+    }
   }
-};
+}
 </script>
 
+<style>
+</style>

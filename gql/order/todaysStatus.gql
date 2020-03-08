@@ -1,0 +1,30 @@
+query todaysStatus {
+  todaysStatus {
+    _id
+   total
+    count
+    items{
+      address{
+        firstName
+        lastName
+        address
+        coords{
+          lat
+          lng
+        }
+      }
+      amount{
+        subtotal
+        discount
+        shipping
+        total
+      }
+      vendor{
+        restaurant
+      }
+      otp
+      orderNo
+      createdAt
+    }
+  }
+}
