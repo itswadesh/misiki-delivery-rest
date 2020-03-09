@@ -11,34 +11,57 @@
       </button>
     </div>
 
-    <div class="flex" v-if="total">
+    <div
+      class="flex"
+      v-if="total"
+    >
       <h1 style="color:blue">{{ total.total | currency }}</h1>
     </div>
-    <div class="flex flex-col justify-between smallcard" v-for="f in orders" :key="f._id">
+    <div
+      class="flex flex-col justify-between smallcard"
+      v-for="f in orders.data"
+      :key="f.id"
+    >
       <div class="flex justify-between items-center border-b pt-1">
         <!-- @click="go('/delivery/' + f._id)" -->
         <div class>
-          <h2 class="text-3xl font-black">{{ f.vendor.qrno }}</h2>
-          <a class="text-xl bg-red-500 text-white" :href="`tel:+91-${f.vendor.phone}`">Call Chef</a>
+          <h2 class="text-3xl font-black">{{ f.vendor.address }}</h2>
+          <a
+            class="text-xl bg-red-500 text-white"
+            :href="`tel:+91-${f.vendor.phone}`"
+          >Call Chef</a>
         </div>
         <div>
-          <h1 class="text-3xl font-black">{{ f.address.qrno }}</h1>
-          <a class="text-xl bg-blue-500 text-white" :href="`tel:+91-${f.phone}`">Call Customer</a>
+          <h1 class="text-3xl font-black">{{ f.address.address }}</h1>
+          <a
+            class="text-xl bg-blue-500 text-white"
+            :href="`tel:+91-${f.phone}`"
+          >Call Customer</a>
         </div>
-        <div class="font-black text-green-600 text-3xl">{{ f.amount | currency }}</div>
+        <div class="font-black text-green-600 text-3xl">{{ f.amount.total | currency }}</div>
       </div>
-      <div class="bg-yellow-200 text-black">{{ f.item.name }}</div>
+      <div
+        class="bg-yellow-200 text-black"
+        v-for="i in f.items"
+        :key="i.slug"
+      >{{ i.name }}</div>
       <div class="flex items-center justify-between">
-        <button class="button" @click="save(f._id, 'Out For Delivery')">Pick</button>
-        <button @click="cancel(f._id, 'Cancelled')">Cancel</button>
+        <button
+          class="button"
+          @click="save(f.id, 'Out For Delivery')"
+        >Pick</button>
+        <button @click="cancel(f.id, 'Cancelled')">Cancel</button>
       </div>
     </div>
     <StickyFooter />
   </div>
 </template>
 <script>
-const Header = () => import("~/components/Header");
-const StickyFooter = () => import("~/components/footer/StickyFooter");
+const Header = () => import('~/components/Header')
+const StickyFooter = () => import('~/components/footer/StickyFooter')
+import orders from '~/gql/order/orders.gql'
+import updateOrder from '~/gql/order/updateOrder.gql'
+
 // import io from "socket.io-client";
 // import { WS_URL } from "~/config";
 // let socket = io(WS_URL);
@@ -50,10 +73,10 @@ export default {
       orders: [],
       total: {},
       restaurant: null
-    };
+    }
   },
   created() {
-    this.getData();
+    this.getData()
   },
   components: {
     Header,
@@ -62,46 +85,58 @@ export default {
   methods: {
     cancel(id, status) {
       this.$swal({
-        title: "Are you sure to cancel?",
-        type: "warning",
+        title: 'Are you sure to cancel?',
+        type: 'warning',
         showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, Cancel!"
+        confirmButtonColor: '#3085d6',
+        cancelButtonColor: '#d33',
+        confirmButtonText: 'Yes, Cancel!'
       }).then(async result => {
         if (result.value) {
-          this.save(id, status);
+          this.save(id, status)
         }
-      });
+      })
     },
     async save(id, status) {
       try {
-        this.$store.commit("busy", true);
-        await this.$axios.$put("api/food-orders/" + id, { status });
-        this.getData();
+        this.$store.commit('busy', true)
+        await this.$apollo.query({
+          query: updateOrder,
+          variables: { id, status }
+        })
+        this.getData()
         // this.$router.push("/food/pickup");
       } catch (e) {
+        this.$store.commit('setErr', e)
       } finally {
-        this.$store.commit("busy", false);
+        this.$store.commit('busy', false)
       }
     },
     go(url) {
-      this.$router.push(url);
+      this.$router.push(url)
     },
     async getData() {
       try {
-        this.$store.commit("busy", true);
-        this.orders = await this.$axios.$get(
-          "api/food-orders/chef/" + this.$route.params.id
-        );
+        this.$store.commit('busy', true)
+        this.orders = (
+          await this.$apollo.query({
+            query: orders,
+            variables: {
+              // today: true,
+              // status: 'Order Placed',
+              vendor: this.$route.params.id
+            }
+          })
+        ).data.orders
         // await ss.syncUpdates("food-order", this.orders);
       } catch (e) {
+        this.$store.commit('setErr', e)
       } finally {
-        this.$store.commit("busy", false);
+        this.$store.commit('busy', false)
       }
     }
   }
-};
+}
 </script>
 
 <style scoped>
