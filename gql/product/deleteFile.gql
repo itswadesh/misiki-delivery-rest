@@ -1,4 +1,4 @@
-mutation deleteFile($path:String) {
+mutation deleteFile($path: String) {
   deleteFile(path: $path) {
     filename
   }

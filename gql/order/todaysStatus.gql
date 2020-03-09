@@ -1,25 +1,25 @@
 query todaysStatus {
   todaysStatus {
     _id
-   total
+    amount
     count
-    items{
-      address{
+    items {
+      address {
         firstName
         lastName
         address
-        coords{
+        coords {
           lat
           lng
         }
       }
-      amount{
+      amount {
         subtotal
         discount
         shipping
         total
       }
-      vendor{
+      vendor {
         restaurant
       }
       otp

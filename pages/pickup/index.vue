@@ -1,26 +1,33 @@
 <template>
   <div>
     <Header />
-    <div class="heading">
+    <!-- <div class="heading">
       Today's Pickup - {{ orders.all && orders.all.count }}
       <button @click="getData">
         <i class="fa fa-refresh" />
       </button>
-    </div>
-    <div class="fx" v-if="orders.all">
+    </div> -->
+    <div
+      class="fx"
+      v-if="orders.all"
+    >
       <h1 style="color:blue">{{ orders.all.total | currency }}</h1>
       <h1 style="color:red">&nbsp;- {{ orders.cancelled.total | currency }}</h1>
       <h1 style="color:green">&nbsp; = {{ (orders.all.total - orders.cancelled.total) | currency }}</h1>
     </div>
-    <div class="content js-bt smallcard fx" v-for="c in chefs" :key="c._id._id">
-      <nuxt-link :to="'/pickup/' + c._id._id">
+    <div
+      class="content js-bt smallcard fx"
+      v-for="c in chefs"
+      :key="c._id.id"
+    >
+      <nuxt-link :to="'/pickup/' + c._id.id">
         <div class>
           <h2 class="text-3xl font-black">{{ c._id.restaurant }}</h2>
-          <h3 class="text-2xl font-black">{{ c._id.qrno }}</h3>
-          {{ c._id.phone }}
+          <h3 class="text-2xl font-black">{{ c._id.id.address }}</h3>
+          {{ c._id.id.phone }}
         </div>
         <div class>
-          <h1 class="text-3xl font-black text-orange-500">{{ c._id.vendor_name }}</h1>
+          <h1 class="text-3xl font-black text-orange-500">{{ c._id.firstName }}</h1>
         </div>
         <h1 class="text-3xl font-black text-red-500">{{ c.amount | currency }} ({{ c.count }})</h1>
       </nuxt-link>
@@ -59,15 +66,19 @@ export default {
     async getData() {
       try {
         this.$store.commit('busy', true)
-        this.chefs = await this.$apollo.query({
-          query: todaysChefs,
-          fetchPolicy: 'no-cache'
-        })
+        this.chefs = (
+          await this.$apollo.query({
+            query: todaysChefs,
+            fetchPolicy: 'no-cache'
+          })
+        ).data.todaysChefs
         // await ss.syncUpdates("user", this.chefs);
-        this.orders = await this.$apollo.query({
-          query: todaysStatus,
-          fetchPolicy: 'no-cache'
-        })
+        this.orders = (
+          await this.$apollo.query({
+            query: todaysStatus,
+            fetchPolicy: 'no-cache'
+          })
+        ).data.todaysStatus
         this.$store.commit('busy', false)
       } catch (e) {
         this.$store.commit('busy', false)

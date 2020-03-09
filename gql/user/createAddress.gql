@@ -1,16 +1,16 @@
 mutation createAddress(
   $email: String
-   $firstName: String 
-    $lastName: String  
-      $address: String 
-       $town: String 
-         $city: String
-           $country: String
-            $state: String
-                $coords: Geo
-    $zip: String  
-     $phone: String
-     ){
+  $firstName: String
+  $lastName: String
+  $address: String
+  $town: String
+  $city: String
+  $country: String
+  $state: String
+  $coords: Geo
+  $zip: String
+  $phone: String
+) {
   createAddress(
     email: $email
     firstName: $firstName

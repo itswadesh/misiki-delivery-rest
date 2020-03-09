@@ -15,10 +15,10 @@ query reviews(
     sort: $sort
   ) {
     data {
-      pid{
+      pid {
         name
       }
-      uid{
+      uid {
         firstName
         lastName
       }

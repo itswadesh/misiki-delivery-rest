@@ -1,0 +1,17 @@
+query todaysChefs {
+  todaysChefs {
+    _id {
+      id
+      restaurant
+      firstName
+      lastName
+      address {
+        firstName
+        lastName
+        address
+      }
+    }
+    count
+    amount
+  }
+}

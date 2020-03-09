@@ -41,7 +41,7 @@ query myCustomers(
         rate
         qty
       }
-      uid{
+      uid {
         phone
         firstName
         lastName

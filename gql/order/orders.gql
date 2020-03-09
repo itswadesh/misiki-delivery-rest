@@ -1,14 +1,15 @@
-query pendingOrders(
+query orders(
   $page: Int
   $skip: Int
   $limit: Int
   $search: String
   $sort: String
-  $q: String
+  $vendor: String
+  $user: String
 ) {
-  pendingOrders(
+  orders(
     page: $page
-    q: $q
+    vendor: $vendor
     skip: $skip
     limit: $limit
     search: $search

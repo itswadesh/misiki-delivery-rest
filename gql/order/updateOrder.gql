@@ -1,5 +1,5 @@
-mutation updateOrder($id:ID!,$status:String) {
-  updateOrder(id:$id) {
+mutation updateOrder($id: ID!, $status: String) {
+  updateOrder(id: $id) {
     id
     orderNo
     otp

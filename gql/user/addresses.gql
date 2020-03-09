@@ -9,8 +9,9 @@ query addresses {
     city
     country
     state
-    coords{
-      lat lng
+    coords {
+      lat
+      lng
     }
     zip
     phone
