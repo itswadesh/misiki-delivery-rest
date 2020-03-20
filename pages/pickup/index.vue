@@ -1,50 +1,44 @@
 <template>
   <div>
     <Header />
-    <div class="heading">
+    <!-- <div class="heading">
       Today's Pickup - {{ orders.all && orders.all.count }}
       <button @click="getData">
         <i class="fa fa-refresh" />
       </button>
-    </div>
-    <div
-      class="fx"
-      v-if="orders.all"
-    >
-      <h1 style="color:blue">{{ orders.all.total | currency }}</h1>
-      <h1 style="color:red">&nbsp;- {{ orders.cancelled.total | currency }}</h1>
-      <h1 style="color:green">
-        &nbsp; = {{ (orders.all.total - orders.cancelled.total) | currency }}
-      </h1>
-    </div>
-    <div
-      class="content js-bt smallcard fx"
-      v-for="c in chefs"
-      :key="c._id._id"
-    >
-      <nuxt-link :to="'/pickup/' + c._id._id">
-        <div class="">
-          <h2 class="text-3xl font-black">{{ c._id.restaurant }}</h2>
-          <h3 class="text-2xl font-black">{{ c._id.qrno }}</h3>
-          {{ c._id.phone }}
-        </div>
-        <div class="">
-          <h1 class="text-3xl font-black text-orange-500">
-            {{ c._id.vendor_name }}
-          </h1>
-        </div>
-        <h1 class="text-3xl font-black text-red-500">
-          {{ c.amount | currency }} ({{ c.count }})
-        </h1>
-      </nuxt-link>
+    </div>-->
+    <div v-if="chefs">
+      <div class="fx" v-if="chefs.delivery && chefs.delivery.all">
+        <h1 style="color:blue">{{ chefs.delivery.all.total | currency }}</h1>
+        <h1
+          style="color:red"
+        >&nbsp;- {{ chefs.delivery.cancelled && chefs.delivery.cancelled.total | currency }}</h1>
+        <h1
+          style="color:green"
+        >&nbsp; = {{ (chefs.delivery.all.total - chefs.delivery.cancelled.total) | currency }}</h1>
+      </div>
+      <div class="content js-bt smallcard fx" v-for="c in chefs.todaysChefs" :key="c._id.id">
+        <nuxt-link :to="'/pickup/' + c._id.id">
+          <div class>
+            <h2 class="text-3xl font-black">{{ c._id.restaurant }}</h2>
+            <h3 class="text-2xl font-black">{{ c._id.id.address }}</h3>
+            {{ c._id.id.phone }}
+          </div>
+          <div class>
+            <h1 class="text-3xl font-black text-orange-500">{{ c._id.firstName }}</h1>
+          </div>
+          <h1 class="text-3xl font-black text-red-500">{{ c.amount | currency }} ({{ c.count }})</h1>
+        </nuxt-link>
+      </div>
     </div>
     <StickyFooter />
-
   </div>
 </template>
 <script>
-const Header = () => import("~/components/Header");
-const StickyFooter = () => import("~/components/footer/StickyFooter");
+const Header = () => import('~/components/Header')
+const StickyFooter = () => import('~/components/footer/StickyFooter')
+import todaysChefs from '~/gql/order/todaysChefs.gql'
+// import todaysStatus from '~/gql/order/todaysStatus.gql'
 // import io from "socket.io-client";
 // import { WS_URL } from "~/config";
 // let socket = io(WS_URL);
@@ -55,10 +49,10 @@ export default {
     return {
       chefs: [],
       orders: {}
-    };
+    }
   },
   created() {
-    this.getData();
+    this.getData()
   },
   components: {
     Header,
@@ -66,28 +60,38 @@ export default {
   },
   methods: {
     go(url) {
-      this.$router.push(url);
+      this.$router.push(url)
     },
     async getData() {
       try {
-        this.$store.commit("busy", true);
-        this.chefs = await this.$axios.$get("api/food-orders/todaysChefs");
+        this.$store.commit('busy', true)
+        this.chefs = (
+          await this.$apollo.query({
+            query: todaysChefs,
+            fetchPolicy: 'no-cache'
+          })
+        ).data
         // await ss.syncUpdates("user", this.chefs);
-        this.orders = await this.$axios.$get("api/food-orders/todaysStatus");
-        this.$store.commit("busy", false);
+        // this.orders = (
+        //   await this.$apollo.query({
+        //     query: todaysStatus,
+        //     fetchPolicy: 'no-cache'
+        //   })
+        // ).data.todaysStatus
+        this.$store.commit('busy', false)
       } catch (e) {
-        this.$store.commit("busy", false);
+        this.$store.commit('busy', false)
       } finally {
-        this.$store.commit("busy", false);
+        this.$store.commit('busy', false)
       }
     }
   },
   head() {
     return {
-      title: "Food items to be picked up"
-    };
+      title: 'Food items to be picked up'
+    }
   }
-};
+}
 </script>
 
 <style scoped>

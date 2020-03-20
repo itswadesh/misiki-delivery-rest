@@ -1,0 +1,79 @@
+query orders(
+  $page: Int
+  $skip: Int
+  $limit: Int
+  $search: String
+  $sort: String
+  $vendor: String
+  $user: String
+  $today: Boolean
+  $status: String
+) {
+  orders(
+    page: $page
+    vendor: $vendor
+    user: $user
+    today: $today
+    status: $status
+    skip: $skip
+    limit: $limit
+    search: $search
+    sort: $sort
+  ) {
+    data {
+      id
+      orderNo
+      otp
+      amount {
+        qty
+        subtotal
+        total
+        shipping
+        discount
+      }
+      delivery {
+        otp
+        finish {
+          lat
+          lng
+        }
+      }
+      status
+      items {
+        name
+        slug
+        img
+        rate
+        qty
+      }
+      uid {
+        phone
+        firstName
+        lastName
+      }
+      address {
+        firstName
+        lastName
+        address
+        town
+        city
+        zip
+        coords {
+          lat
+          lng
+        }
+      }
+      vendor {
+        restaurant
+        phone
+        firstName
+        lastName
+        address {
+          address
+        }
+      }
+      createdAt
+      updatedAt
+    }
+  }
+}
