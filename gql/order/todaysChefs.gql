@@ -1,4 +1,31 @@
 query todaysChefs {
+  todaysStatus {
+    pending {
+      _id
+      count
+      total
+    }
+    out {
+      _id
+      count
+      total
+    }
+    delivered {
+      _id
+      count
+      total
+    }
+    cancelled {
+      _id
+      count
+      total
+    }
+    all {
+      _id
+      count
+      total
+    }
+  }
   todaysChefs {
     _id {
       id

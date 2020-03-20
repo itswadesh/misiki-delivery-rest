@@ -31,7 +31,7 @@ import StickyFooter from '~/components/footer/StickyFooter'
 import pendingOrders from '~/gql/order/pendingOrders.gql'
 import myToday from '~/gql/order/myToday.gql'
 import todaysSummary from '~/gql/order/todaysSummary.gql'
-import todaysStatus from '~/gql/order/todaysStatus.gql'
+import todaysStatus from '~/gql/order/delivery.gql'
 import updateOrder from '~/gql/order/updateOrder.gql'
 export default {
   middleware: ['isAuth'],

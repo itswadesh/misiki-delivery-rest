@@ -6,31 +6,30 @@
       <button @click="getData">
         <i class="fa fa-refresh" />
       </button>
-    </div> -->
-    <div
-      class="fx"
-      v-if="orders.all"
-    >
-      <h1 style="color:blue">{{ orders.all.total | currency }}</h1>
-      <h1 style="color:red">&nbsp;- {{ orders.cancelled.total | currency }}</h1>
-      <h1 style="color:green">&nbsp; = {{ (orders.all.total - orders.cancelled.total) | currency }}</h1>
-    </div>
-    <div
-      class="content js-bt smallcard fx"
-      v-for="c in chefs"
-      :key="c._id.id"
-    >
-      <nuxt-link :to="'/pickup/' + c._id.id">
-        <div class>
-          <h2 class="text-3xl font-black">{{ c._id.restaurant }}</h2>
-          <h3 class="text-2xl font-black">{{ c._id.id.address }}</h3>
-          {{ c._id.id.phone }}
-        </div>
-        <div class>
-          <h1 class="text-3xl font-black text-orange-500">{{ c._id.firstName }}</h1>
-        </div>
-        <h1 class="text-3xl font-black text-red-500">{{ c.amount | currency }} ({{ c.count }})</h1>
-      </nuxt-link>
+    </div>-->
+    <div v-if="chefs">
+      <div class="fx" v-if="chefs.todaysStatus && chefs.todaysStatus.all">
+        <h1 style="color:blue">{{ chefs.todaysStatus.all.total | currency }}</h1>
+        <h1
+          style="color:red"
+        >&nbsp;- {{ chefs.todaysStatus.cancelled && chefs.todaysStatus.cancelled.total | currency }}</h1>
+        <h1
+          style="color:green"
+        >&nbsp; = {{ (chefs.todaysStatus.all.total - chefs.todaysStatus.cancelled.total) | currency }}</h1>
+      </div>
+      <div class="content js-bt smallcard fx" v-for="c in chefs.todaysChefs" :key="c._id.id">
+        <nuxt-link :to="'/pickup/' + c._id.id">
+          <div class>
+            <h2 class="text-3xl font-black">{{ c._id.restaurant }}</h2>
+            <h3 class="text-2xl font-black">{{ c._id.id.address }}</h3>
+            {{ c._id.id.phone }}
+          </div>
+          <div class>
+            <h1 class="text-3xl font-black text-orange-500">{{ c._id.firstName }}</h1>
+          </div>
+          <h1 class="text-3xl font-black text-red-500">{{ c.amount | currency }} ({{ c.count }})</h1>
+        </nuxt-link>
+      </div>
     </div>
     <StickyFooter />
   </div>
@@ -39,7 +38,7 @@
 const Header = () => import('~/components/Header')
 const StickyFooter = () => import('~/components/footer/StickyFooter')
 import todaysChefs from '~/gql/order/todaysChefs.gql'
-import todaysStatus from '~/gql/order/todaysStatus.gql'
+// import todaysStatus from '~/gql/order/todaysStatus.gql'
 // import io from "socket.io-client";
 // import { WS_URL } from "~/config";
 // let socket = io(WS_URL);
@@ -71,14 +70,14 @@ export default {
             query: todaysChefs,
             fetchPolicy: 'no-cache'
           })
-        ).data.todaysChefs
+        ).data
         // await ss.syncUpdates("user", this.chefs);
-        this.orders = (
-          await this.$apollo.query({
-            query: todaysStatus,
-            fetchPolicy: 'no-cache'
-          })
-        ).data.todaysStatus
+        // this.orders = (
+        //   await this.$apollo.query({
+        //     query: todaysStatus,
+        //     fetchPolicy: 'no-cache'
+        //   })
+        // ).data.todaysStatus
         this.$store.commit('busy', false)
       } catch (e) {
         this.$store.commit('busy', false)

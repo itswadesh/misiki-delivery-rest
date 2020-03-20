@@ -1,53 +1,20 @@
-query myCustomers(
+query myOrders(
   $page: Int
   $skip: Int
   $limit: Int
   $search: String
   $sort: String
   $q: String
+  $id:ID
 ) {
-  todaysStatus {
-    pending {
-      _id
-      count
-      total
-    }
-    out {
-      _id
-      count
-      total
-    }
-    delivered {
-      _id
-      count
-      total
-    }
-    cancelled {
-      _id
-      count
-      total
-    }
-    all {
-      _id
-      count
-      total
-    }
-  }
-  myToday {
-    count
-    amount
-    createdAt
-  }
-  settings{
-    orderStatuses
-  }
-  myCustomers(
+  myOrders(
     page: $page
     q: $q
     skip: $skip
     limit: $limit
     search: $search
     sort: $sort
+    id: $id
   ) {
     count
     pageSize
@@ -59,6 +26,13 @@ query myCustomers(
         reviewed
         createdAt
         updatedAt
+        vendor{
+          address
+          restaurant
+          firstName
+          lastName
+          phone
+        }
         user{
           firstName
           lastName

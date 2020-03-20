@@ -11,46 +11,31 @@
       </button>
     </div>
 
-    <div
-      class="flex"
-      v-if="total"
-    >
+    <!-- <div class="flex" v-if="orders.total">
       <h1 style="color:blue">{{ total.total | currency }}</h1>
-    </div>
-    <div
-      class="flex flex-col justify-between smallcard"
-      v-for="f in orders.data"
-      :key="f.id"
-    >
+    </div>-->
+    <div class="flex flex-col justify-between smallcard" v-for="f in orders.data" :key="f.id">
       <div class="flex justify-between items-center border-b pt-1">
         <!-- @click="go('/delivery/' + f._id)" -->
         <div class>
-          <h2 class="text-3xl font-black">{{ f.vendor.address }}</h2>
-          <a
-            class="text-xl bg-red-500 text-white"
-            :href="`tel:+91-${f.vendor.phone}`"
-          >Call Chef</a>
+          <h2 class="text-xl font-black">{{ f._id.vendor.address }}</h2>
+          <a class="text-xl bg-red-500 text-white" :href="`tel:+91-${f._id.vendor.phone}`">Call Chef</a>
         </div>
         <div>
-          <h1 class="text-3xl font-black">{{ f.address.address }}</h1>
+          <h1 class="text-xl font-black">{{ f._id.address.address }}</h1>
           <a
             class="text-xl bg-blue-500 text-white"
-            :href="`tel:+91-${f.phone}`"
+            :href="`tel:+91-${f._id.user.phone}`"
           >Call Customer</a>
         </div>
-        <div class="font-black text-green-600 text-3xl">{{ f.amount.total | currency }}</div>
+        <div class="font-black text-green-600 text-3xl">{{ f._id.amount.total | currency }}</div>
       </div>
-      <div
-        class="bg-yellow-200 text-black"
-        v-for="i in f.items"
-        :key="i.slug"
-      >{{ i.name }}</div>
-      <div class="flex items-center justify-between">
-        <button
-          class="button"
-          @click="save(f.id, 'Out For Delivery')"
-        >Pick</button>
-        <button @click="cancel(f.id, 'Cancelled')">Cancel</button>
+      <div class="bg-yellow-200 text-black border-b" v-for="(i,ix) in f.items" :key="i.slug">
+        {{ix+1}} - {{ i.name }} * {{i.qty}}
+        <div class="flex items-center justify-between">
+          <button class="button" @click="save(f._id.id, i.pid, 'out')">Pick</button>
+          <button @click="save(f._id.id, i.pid, 'cancelled')">Cancel</button>
+        </div>
       </div>
     </div>
     <StickyFooter />
@@ -59,7 +44,7 @@
 <script>
 const Header = () => import('~/components/Header')
 const StickyFooter = () => import('~/components/footer/StickyFooter')
-import orders from '~/gql/order/orders.gql'
+import myOrders from '~/gql/order/myOrders.gql'
 import updateOrder from '~/gql/order/updateOrder.gql'
 
 // import io from "socket.io-client";
@@ -97,17 +82,17 @@ export default {
         }
       })
     },
-    async save(id, status) {
+    async save(id, pid, status) {
       try {
-        this.$store.commit('busy', true)
-        await this.$apollo.query({
-          query: updateOrder,
-          variables: { id, status }
+        this.$store.commit('clearErr')
+        await this.$apollo.mutate({
+          mutation: updateOrder,
+          variables: { id, pid, status },
+          fetchPolicy: 'no-cache'
         })
         this.getData()
-        // this.$router.push("/food/pickup");
       } catch (e) {
-        this.$store.commit('setErr', e)
+        this.$store.commit('setErr', e, { root: true })
       } finally {
         this.$store.commit('busy', false)
       }
@@ -120,14 +105,13 @@ export default {
         this.$store.commit('busy', true)
         this.orders = (
           await this.$apollo.query({
-            query: orders,
+            query: myOrders,
             variables: {
-              // today: true,
-              // status: 'Order Placed',
-              vendor: this.$route.params.id
-            }
+              id: this.$route.params.id
+            },
+            fetchPolicy: 'no-cache'
           })
-        ).data.orders
+        ).data.myOrders
         // await ss.syncUpdates("food-order", this.orders);
       } catch (e) {
         this.$store.commit('setErr', e)
