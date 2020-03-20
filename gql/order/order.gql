@@ -1,5 +1,6 @@
 query order($id: ID!) {
   order(id: $id) {
+    id
     orderNo
     createdAt
     updatedAt
@@ -48,5 +49,6 @@ query order($id: ID!) {
       }
     }
     status
+    cod_paid
   }
 }
