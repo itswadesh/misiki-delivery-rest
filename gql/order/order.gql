@@ -1,0 +1,52 @@
+query order($id: ID!) {
+  order(id: $id) {
+    orderNo
+    createdAt
+    updatedAt
+    user{
+      firstName
+      lastName
+      phone
+    }
+    payment{
+      method
+      amount
+      status
+    }
+    amount {
+      qty
+      subtotal
+      tax
+      discount
+      total
+      shipping
+    }
+    address {
+      firstName
+      lastName
+      address
+      coords {
+        lat
+        lng
+      }
+    }
+    items {
+      pid
+      name
+      img
+      slug
+      price
+      qty
+      status
+      vendor{
+        firstName
+        lastName
+        phone
+        address{
+          address
+        }
+      }
+    }
+    status
+  }
+}
