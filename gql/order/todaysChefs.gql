@@ -1,5 +1,5 @@
 query todaysChefs {
-  todaysStatus {
+  delivery {
     pending {
       _id
       count

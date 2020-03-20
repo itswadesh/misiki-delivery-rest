@@ -158,36 +158,6 @@
             <li>
               <button
                 type="button"
-                @click="select(5,'/kitchen')"
-                :aria-selected="selected === 5"
-                class="py-2 px-3 w-full flex items-center focus:outline-none focus-visible:underline"
-              >
-                <svg
-                  :class="selected === 5 ? 'text-indigo-400' : 'text-gray-500'"
-                  class="h-6 w-6 transition-all ease-out transition-medium"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                >
-                  <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M12 7a1 1 0 011-1h8a1 1 0 011 1v8a1 1 0 11-2 0V8h-7a1 1 0 01-1-1z"
-                  />
-                  <path
-                    fill-rule="evenodd"
-                    clip-rule="evenodd"
-                    d="M20.707 7.293a1 1 0 010 1.414l-7 7a1 1 0 01-1.414 0L9 12.414l-5.293 5.293a1 1 0 01-1.414-1.414l6-6a1 1 0 011.414 0L13 13.586l6.293-6.293a1 1 0 011.414 0z"
-                  />
-                </svg>
-                <span
-                  :class="selected === 5 ? 'text-indigo-600' : 'text-gray-700'"
-                  class="ml-2 text-sm font-medium transition-all ease-out transition-medium"
-                >Kitchen</span>
-              </button>
-            </li>
-            <li>
-              <button
-                type="button"
                 @click="logout"
                 class="py-2 px-3 w-full flex items-center focus:outline-none focus-visible:underline"
               >

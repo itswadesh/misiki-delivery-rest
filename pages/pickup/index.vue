@@ -8,14 +8,14 @@
       </button>
     </div>-->
     <div v-if="chefs">
-      <div class="fx" v-if="chefs.todaysStatus && chefs.todaysStatus.all">
-        <h1 style="color:blue">{{ chefs.todaysStatus.all.total | currency }}</h1>
+      <div class="fx" v-if="chefs.delivery && chefs.delivery.all">
+        <h1 style="color:blue">{{ chefs.delivery.all.total | currency }}</h1>
         <h1
           style="color:red"
-        >&nbsp;- {{ chefs.todaysStatus.cancelled && chefs.todaysStatus.cancelled.total | currency }}</h1>
+        >&nbsp;- {{ chefs.delivery.cancelled && chefs.delivery.cancelled.total | currency }}</h1>
         <h1
           style="color:green"
-        >&nbsp; = {{ (chefs.todaysStatus.all.total - chefs.todaysStatus.cancelled.total) | currency }}</h1>
+        >&nbsp; = {{ (chefs.delivery.all.total - chefs.delivery.cancelled.total) | currency }}</h1>
       </div>
       <div class="content js-bt smallcard fx" v-for="c in chefs.todaysChefs" :key="c._id.id">
         <nuxt-link :to="'/pickup/' + c._id.id">

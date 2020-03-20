@@ -14,7 +14,6 @@ query delivery {
         vendor{
           firstName
           lastName
-          address
           restaurant
           phone
         }
@@ -47,7 +46,6 @@ query delivery {
         vendor{
           firstName
           lastName
-          address
           restaurant
           phone
         }
@@ -80,7 +78,6 @@ query delivery {
         vendor{
           firstName
           lastName
-          address
           restaurant
           phone
         }
@@ -113,7 +110,6 @@ query delivery {
         vendor{
           firstName
           lastName
-          address
           restaurant
           phone
         }
@@ -146,7 +142,6 @@ query delivery {
         vendor{
           firstName
           lastName
-          address
           restaurant
           phone
         }

@@ -1,20 +1,20 @@
-query myOrders(
+query deliveryOrders(
   $page: Int
   $skip: Int
   $limit: Int
   $search: String
   $sort: String
   $q: String
-  $id:ID
+  $status:String
 ) {
-  myOrders(
+  deliveryOrders(
     page: $page
     q: $q
     skip: $skip
     limit: $limit
     search: $search
     sort: $sort
-    id: $id
+    status: $status
   ) {
     count
     pageSize
