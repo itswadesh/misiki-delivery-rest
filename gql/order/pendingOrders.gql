@@ -32,13 +32,13 @@ query pendingOrders(
           lng
         }
       }
-      status
       items {
         name
         slug
         img
         rate
         qty
+        status
       }
       uid {
         phone

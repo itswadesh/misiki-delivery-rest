@@ -9,8 +9,15 @@
         @submit.stop.prevent="submit()"
       >
         <div class="p-2 mb-4" v-if="a">
+          <Avatar
+            :image="profile.avatar"
+            name="avatar"
+            folder="avatar"
+            @remove="removeImage"
+            @save="saveImage"
+          />
           <div type="tel" label="Phone" class="w-full text-center" name="name">Phone: {{a.phone}}</div>
-          <div class="w-full flex justify-between mb-4">
+          <div class="w-full flex justify-between mt-4 mb-4">
             <Textbox
               label="First Name"
               class="w-1/2 mr-1"
@@ -34,13 +41,6 @@
             <Textbox label="City" class="w-1/2 mr-1" name="name" v-model="a.city" />
             <Textbox label="State" class="w-1/2 ml-1" name="name" v-model="a.state" />
           </div>
-          <ImageUpload
-            :image="profile.avatar"
-            name="avatar"
-            folder="avatar"
-            @remove="removeImage"
-            @save="saveImage"
-          />
         </div>
         <div class="flex shadow lg:shadow-none fixed lg:relative bottom-0 justify-between w-full">
           <button
@@ -55,12 +55,6 @@
         </div>
       </form>
     </div>
-    <ul v-if="nwErr" class="mx-2">
-      <li class="bg-red-200 p-3 mb-2 rounded" v-for="(e,ix) in nwErr" :key="ix">{{e.message}}</li>
-    </ul>
-    <ul v-if="graphErr" class="mx-2">
-      <li class="bg-red-200 p-3 mb-2 rounded" v-for="(e,ix) in graphErr" :key="ix">{{e.message}}</li>
-    </ul>
     <GeoLocation />
   </div>
 </template>
@@ -71,7 +65,7 @@ const Heading = () => import('~/components/Heading')
 const Textbox = () => import('~/components/ui/Textbox')
 const Checkbox = () => import('~/components/ui/Checkbox')
 const GeoLocation = () => import('~/components/GeoLocation')
-const ImageUpload = () => import('~/components/ImageUpload')
+const Avatar = () => import('~/components/Avatar')
 import me from '~/gql/user/me.gql'
 
 import { location } from '~/mixins'
@@ -91,7 +85,7 @@ export default {
     Textbox,
     Checkbox,
     GeoLocation,
-    ImageUpload
+    Avatar
   },
   computed: {
     // user() {

@@ -5,10 +5,18 @@
       v-if="user"
       class="text-center lg:w-1/5 lg:mt-10 bg-white shadow leading-loose w-full p-10 border-b border-gray-200"
     >
-      <span
-        class="h-20 w-20 p-2 text-4xl text-gray-600 rounded-full bg-gray-200 inline-block"
-      >{{user.firstName | first}}</span>
-      <br />
+      <div class="mb-2">
+        <img
+          v-if="user.avatar"
+          class="inline-block w-16 h-16 rounded-full object-cover"
+          v-lazy="user.avatar"
+          alt
+        />
+        <span
+          v-else
+          class="h-20 w-20 p-2 text-4xl text-gray-600 rounded-full bg-gray-200 inline-block"
+        >{{user.firstName | first}}</span>
+      </div>
       <span class="text-lg">{{user.firstName}}</span>
       <span class="text-sm text-gray-500">{{user.phone}}</span>
     </div>

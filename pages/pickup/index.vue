@@ -17,7 +17,7 @@
           style="color:green"
         >&nbsp; = {{ (chefs.delivery.all.total - chefs.delivery.cancelled.total) | currency }}</h1>
       </div>
-      <div class="content js-bt smallcard fx" v-for="c in chefs.todaysChefs" :key="c._id.id">
+      <div class="content js-bt smallcard fx" v-for="(c,ix) in chefs.todaysChefs" :key="ix">
         <nuxt-link :to="'/pickup/' + c._id.id">
           <div class>
             <h2 class="text-3xl font-black">{{ c._id.restaurant }}</h2>
@@ -64,7 +64,7 @@ export default {
     },
     async getData() {
       try {
-        this.$store.commit('busy', true)
+        this.$store.commit('clearErr')
         this.chefs = (
           await this.$apollo.query({
             query: todaysChefs,
@@ -78,9 +78,8 @@ export default {
         //     fetchPolicy: 'no-cache'
         //   })
         // ).data.todaysStatus
-        this.$store.commit('busy', false)
       } catch (e) {
-        this.$store.commit('busy', false)
+        this.$store.commit('setErr', e)
       } finally {
         this.$store.commit('busy', false)
       }

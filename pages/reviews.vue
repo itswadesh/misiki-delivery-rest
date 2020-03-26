@@ -20,6 +20,7 @@ export default {
   },
   async mounted() {
     try {
+      this.$store.commit('clearErr')
       this.reviews = (
         await this.$apollo.query({
           query: reviews,

@@ -38,13 +38,22 @@ query orders(
           lng
         }
       }
-      status
       items {
         name
         slug
         img
         rate
         qty
+        status
+        vendor {
+        restaurant
+        phone
+        firstName
+        lastName
+        address {
+          address
+        }
+      }
       }
       uid {
         phone
@@ -63,15 +72,7 @@ query orders(
           lng
         }
       }
-      vendor {
-        restaurant
-        phone
-        firstName
-        lastName
-        address {
-          address
-        }
-      }
+      
       createdAt
       updatedAt
     }

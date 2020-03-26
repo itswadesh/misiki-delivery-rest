@@ -4,30 +4,28 @@ query delivery {
       _id
       count
       total
-      items{
-        user{
+      items {
+        user {
           firstName
           lastName
           phone
           id
         }
-        vendor{
-          firstName
-          lastName
-          restaurant
-          phone
-        }
-        address{
+        address {
           firstName
           lastName
           address
           phone
         }
-        amount{
+        amount {
           subtotal
           discount
           shipping
-          tax
+          tax{
+            cgst
+            sgst
+            igst
+          }
           total
         }
       }
@@ -36,30 +34,28 @@ query delivery {
       _id
       count
       total
-      items{
-        user{
+      items {
+        user {
           firstName
           lastName
           phone
           id
         }
-        vendor{
-          firstName
-          lastName
-          restaurant
-          phone
-        }
-        address{
+        address {
           firstName
           lastName
           address
           phone
         }
-        amount{
+        amount {
           subtotal
           discount
           shipping
-          tax
+          tax{
+            cgst
+            sgst
+            igst
+          }
           total
         }
       }
@@ -68,30 +64,28 @@ query delivery {
       _id
       count
       total
-      items{
-        user{
+      items {
+        user {
           firstName
           lastName
           phone
           id
         }
-        vendor{
-          firstName
-          lastName
-          restaurant
-          phone
-        }
-        address{
+        address {
           firstName
           lastName
           address
           phone
         }
-        amount{
+        amount {
           subtotal
           discount
           shipping
-          tax
+          tax{
+            cgst
+            sgst
+            igst
+          }
           total
         }
       }
@@ -100,30 +94,28 @@ query delivery {
       _id
       count
       total
-      items{
-        user{
+      items {
+        user {
           firstName
           lastName
           phone
           id
         }
-        vendor{
-          firstName
-          lastName
-          restaurant
-          phone
-        }
-        address{
+        address {
           firstName
           lastName
           address
           phone
         }
-        amount{
+        amount {
           subtotal
           discount
           shipping
-          tax
+          tax{
+            cgst
+            sgst
+            igst
+          }
           total
         }
       }
@@ -132,36 +124,34 @@ query delivery {
       _id
       count
       total
-      items{
-        user{
+      items {
+        user {
           firstName
           lastName
           phone
           id
         }
-        vendor{
-          firstName
-          lastName
-          restaurant
-          phone
-        }
-        address{
+        address {
           firstName
           lastName
           address
           phone
         }
-        amount{
+        amount {
           subtotal
           discount
           shipping
-          tax
+          tax{
+            cgst
+            sgst
+            igst
+          }
           total
         }
       }
     }
   }
-  settings{
+  settings {
     orderStatuses
   }
 }

@@ -22,7 +22,12 @@
           <Textbox label="Last Name" class="w-full" name="lastName" v-model="a.lastName" />
           <Textbox type="tel" label="Pin Code" class="w-full" name="name" v-model="a.zip" />
           <Textbox label="Address" class="w-full" name="name" v-model="a.address" />
-          <Textbox label="Landmark" class="w-full" name="name" v-model="a.landmark" />
+          <!-- <Textbox
+            label="Landmark"
+            class="w-full"
+            name="name"
+            v-model="a.landmark"
+          />-->
 
           <div class="w-full flex justify-between">
             <Textbox label="City" class="w-1/2 mr-1" name="name" v-model="a.city" />
@@ -33,7 +38,7 @@
         <div class="flex shadow lg:shadow-none fixed bottom-0 justify-between w-full lg:w-1/3">
           <button
             type="button"
-            @click="$router.push('/my/address')"
+            @click="$router.push('/checkout/address')"
             class="tracking-widest p-3 w-1/2 bg-white text-black text-sm font-semibold"
           >CANCEL</button>
           <button
@@ -50,10 +55,11 @@
 const Textbox = () => import('~/components/ui/Textbox')
 const Header = () => import('~/components/Header')
 import updateAddress from '~/gql/user/updateAddress.gql'
-import createAddress from '~/gql/user/createAddress.gql'
+import addAddress from '~/gql/user/addAddress.gql'
 import address from '~/gql/user/address.gql'
 
 export default {
+  middleware: ['isAuth'],
   data() {
     return {
       a: {}
@@ -67,6 +73,8 @@ export default {
     const id = this.$route.params.id
     if (id == 'add') return
     try {
+      this.$store.commit('busy', true)
+      this.$store.commit('clearErr')
       this.a = (
         await this.$apollo.query({
           query: address,
@@ -85,8 +93,11 @@ export default {
       this.$router.push(url)
     },
     async submit(address) {
-      delete address.coords.__typename
+      if (address.coords) delete address.coords.__typename
+      address.zip = +address.zip
       try {
+        this.$store.commit('busy', true)
+        this.$store.commit('clearErr')
         if (address.id)
           await this.$apollo.mutate({
             mutation: updateAddress,
@@ -95,7 +106,7 @@ export default {
           })
         else
           await this.$apollo.mutate({
-            mutation: createAddress,
+            mutation: addAddress,
             variables: address,
             fetchPolicy: 'no-cache'
           })

@@ -18,13 +18,13 @@ query todayTotal {
         lng
       }
     }
-    status
     items {
       name
       slug
       img
       rate
       qty
+      status
     }
     address {
       firstName

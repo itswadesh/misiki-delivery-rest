@@ -26,12 +26,6 @@ query myOrders(
         reviewed
         createdAt
         updatedAt
-        vendor{
-          restaurant
-          firstName
-          lastName
-          phone
-        }
         user{
           firstName
           lastName
@@ -69,6 +63,12 @@ query myOrders(
         price
         qty
         status
+        vendor{
+          restaurant
+          firstName
+          lastName
+          phone
+        }
       }
     }
   }

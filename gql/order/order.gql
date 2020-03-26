@@ -17,7 +17,11 @@ query order($id: ID!) {
     amount {
       qty
       subtotal
-      tax
+      tax{
+        cgst
+        sgst
+        igst
+      }
       discount
       total
       shipping
@@ -48,7 +52,6 @@ query order($id: ID!) {
         }
       }
     }
-    status
     cod_paid
   }
 }

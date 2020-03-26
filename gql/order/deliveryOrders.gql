@@ -26,12 +26,6 @@ query deliveryOrders(
         reviewed
         createdAt
         updatedAt
-        vendor{
-          restaurant
-          firstName
-          lastName
-          phone
-        }
         user{
           firstName
           lastName
@@ -69,6 +63,12 @@ query deliveryOrders(
         price
         qty
         status
+        vendor{
+          restaurant
+          firstName
+          lastName
+          phone
+        }
       }
     }
   }

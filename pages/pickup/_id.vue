@@ -17,10 +17,6 @@
     <div class="flex flex-col justify-between smallcard" v-for="f in orders.data" :key="f.id">
       <div class="flex justify-between items-center border-b pt-1">
         <!-- @click="go('/delivery/' + f._id)" -->
-        <div class>
-          <h2 class="text-xl font-black">{{ f._id.vendor.address }}</h2>
-          <a class="text-xl bg-red-500 text-white" :href="`tel:+91-${f._id.vendor.phone}`">Call Chef</a>
-        </div>
         <div>
           <h1 class="text-xl font-black">{{ f._id.address.address }}</h1>
           <a
@@ -32,6 +28,10 @@
       </div>
       <div class="bg-yellow-200 text-black border-b" v-for="(i,ix) in f.items" :key="i.slug">
         {{ix+1}} - {{ i.name }} * {{i.qty}}
+        <div v-if="f._id">
+          <h2 class="text-xl font-black">{{ i.vendor.restaurant }}</h2>
+          <a class="text-xl bg-red-500 text-white" :href="`tel:+91-${i.vendor.phone}`">Call Chef</a>
+        </div>
         <div class="flex items-center justify-between">
           <button class="button" @click="save(f._id.id, i.pid, 'out')">Pick</button>
           <button @click="save(f._id.id, i.pid, 'cancelled')">Cancel</button>
@@ -102,13 +102,11 @@ export default {
     },
     async getData() {
       try {
-        this.$store.commit('busy', true)
+        this.$store.commit('clearErr')
         this.orders = (
           await this.$apollo.query({
             query: myOrders,
-            variables: {
-              id: this.$route.params.id
-            },
+            variables: { id: this.$route.params.id },
             fetchPolicy: 'no-cache'
           })
         ).data.myOrders

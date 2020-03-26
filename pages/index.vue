@@ -33,6 +33,9 @@ import myToday from '~/gql/order/myToday.gql'
 import todaysSummary from '~/gql/order/todaysSummary.gql'
 import todaysStatus from '~/gql/order/delivery.gql'
 import updateOrder from '~/gql/order/updateOrder.gql'
+import delivery from '~/gql/order/delivery.gql'
+import deliveryOrders from '~/gql/order/deliveryOrders.gql'
+
 export default {
   middleware: ['isAuth'],
   data() {
@@ -51,21 +54,41 @@ export default {
     async getData() {
       try {
         this.$store.commit('clearErr')
-        this.todaysStatus = (
-          await this.$apollo.query({ query: todaysStatus, variables: {} })
-        ).data.todaysStatus
-        this.todayTotal = (
-          await this.$apollo.query({ query: myToday, variables: {} })
-        ).data.myToday
-        this.todaySummary = (
-          await this.$apollo.query({ query: todaysSummary, variables: {} })
-        ).data.todaysSummary
         this.orders = (
-          await this.$apollo.query({ query: pendingOrders, variables: {} })
-        ).data.pendingOrders
+          await this.$apollo.query({
+            query: delivery,
+            fetchPolicy: 'no-cache'
+          })
+        ).data
+        this.deliveries = (
+          await this.$apollo.query({
+            query: deliveryOrders,
+            variables: { status: this.status },
+            fetchPolicy: 'no-cache'
+          })
+        ).data.deliveryOrders
+      } catch (e) {
+        this.$store.commit('setErr', e)
       } finally {
         this.$store.commit('busy', false)
       }
+      // try {
+      //   this.$store.commit('clearErr')
+      //   this.todaysStatus = (
+      //     await this.$apollo.query({ query: todaysStatus, variables: {} })
+      //   ).data.todaysStatus
+      //   this.todayTotal = (
+      //     await this.$apollo.query({ query: myToday, variables: {} })
+      //   ).data.myToday
+      //   this.todaySummary = (
+      //     await this.$apollo.query({ query: todaysSummary, variables: {} })
+      //   ).data.todaysSummary
+      //   this.orders = (
+      //     await this.$apollo.query({ query: pendingOrders, variables: {} })
+      //   ).data.pendingOrders
+      // } finally {
+      //   this.$store.commit('busy', false)
+      // }
     }
   },
   // async asyncData({ $axios }) {
